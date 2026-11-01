@@ -43,7 +43,7 @@ jobs:
           context: backend
           target: prod
           push: true
-          tags: ghcr.io/${{ env.OWNER }}/django-api:${{ env.SHA }},ghcr.io/${{ env.OWNER }}/django-api:latest
+          tags: ghcr.io/${{ env.OWNER }}/django-academy-api:${{ env.SHA }},ghcr.io/${{ env.OWNER }}/django-academy-api:latest
           cache-from: type=gha,scope=api
           cache-to: type=gha,mode=max,scope=api
       - name: Build and push web image
@@ -52,7 +52,7 @@ jobs:
           context: frontend
           target: prod
           push: true
-          tags: ghcr.io/${{ env.OWNER }}/django-web:${{ env.SHA }},ghcr.io/${{ env.OWNER }}/django-web:latest
+          tags: ghcr.io/${{ env.OWNER }}/django-academy-web:${{ env.SHA }},ghcr.io/${{ env.OWNER }}/django-academy-web:latest
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
       - name: Deploy to the Azure VM
@@ -64,6 +64,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
-          scp -i ~/.ssh/deploy infra/staging/compose.yml infra/staging/Caddyfile infra/staging/deploy.sh "deploy@$SSH_HOST:/opt/django/"
+          scp -i ~/.ssh/deploy infra/staging/compose.yml infra/staging/Caddyfile infra/staging/deploy.sh "deploy@$SSH_HOST:/opt/django-academy/"
           ssh -i ~/.ssh/deploy "deploy@$SSH_HOST" \
-            "echo '$GHCR_READ_TOKEN' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin && bash /opt/django/deploy.sh '$SHA'"
+            "echo '$GHCR_READ_TOKEN' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin && bash /opt/django-academy/deploy.sh '$SHA'"

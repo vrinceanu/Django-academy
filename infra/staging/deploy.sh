@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs on the VM (as deploy) for every merge to main. Usage: deploy.sh <image-tag>
 set -euo pipefail
-cd /opt/django
+cd /opt/django-academy
 
 TAG="${1:?usage: deploy.sh <image-tag>}"
 sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${TAG}/" .env

@@ -1,9 +1,9 @@
 # Staging and demo stack on the Azure VM. Served at https://staging.hbcuchip.org:8080
 # Images are built by GitHub Actions and pulled from GHCR; IMAGE_TAG is the git SHA.
-name: django
+name: django-academy
 
 x-backend: &backend
-  image: ghcr.io/${GHCR_OWNER}/django-api:${IMAGE_TAG:-latest}
+  image: ghcr.io/${GHCR_OWNER}/django-academy-api:${IMAGE_TAG:-latest}
   restart: unless-stopped
   env_file: .env
   environment:
@@ -46,7 +46,7 @@ services:
     command: celery -A config beat --loglevel=INFO --schedule=/tmp/celerybeat-schedule
 
   web:
-    image: ghcr.io/${GHCR_OWNER}/django-web:${IMAGE_TAG:-latest}
+    image: ghcr.io/${GHCR_OWNER}/django-academy-web:${IMAGE_TAG:-latest}
     restart: unless-stopped
 
   postgres:

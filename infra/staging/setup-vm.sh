@@ -2,10 +2,10 @@
 # One-time setup of the Azure staging VM (Ubuntu). Run as azureuser:
 #   scp infra/staging/setup-vm.sh azureuser@20.51.113.185: && ssh azureuser@20.51.113.185 'bash setup-vm.sh'
 # Afterwards, add the deploy public key it prints to /home/deploy/.ssh/authorized_keys
-# (see docs/staging.md) and fill in /opt/django/.env.
+# (see docs/staging.md) and fill in /opt/django-academy/.env.
 set -euo pipefail
 
-APP_DIR=/opt/django
+APP_DIR=/opt/django-academy
 
 if ! command -v docker >/dev/null; then
   echo "Installing Docker..."
@@ -23,8 +23,8 @@ sudo chmod 700 /home/deploy/.ssh && sudo chmod 600 /home/deploy/.ssh/authorized_
 sudo chown -R deploy:deploy /home/deploy/.ssh "$APP_DIR"
 
 # Nightly database dump, kept for 14 days.
-sudo tee /etc/cron.d/django-backup >/dev/null <<'CRON'
-15 3 * * * deploy cd /opt/django && mkdir -p backups && docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' | gzip > backups/chips-$(date +\%F).sql.gz && find backups -name '*.sql.gz' -mtime +14 -delete
+sudo tee /etc/cron.d/django-academy-backup >/dev/null <<'CRON'
+15 3 * * * deploy cd /opt/django-academy && mkdir -p backups && docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' | gzip > backups/chips-$(date +\%F).sql.gz && find backups -name '*.sql.gz' -mtime +14 -delete
 CRON
 
 echo

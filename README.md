@@ -1,9 +1,9 @@
-# django — CHIPS Academy
+# django-academy — CHIPS Academy
 
 The learning platform for the HBCU CHIPS Network: cohort-based microcredentials in
 semiconductors and microelectronics, with verifiable badges and certificates.
 
-The repository is named `django`; Python packages inside keep their design names
+The repository is named `django-academy`. Python packages inside keep their design names
 (`config`, `apps.*`) so nothing shadows the Django framework itself (see
 `docs/adr/0001-project-name.md`).
 

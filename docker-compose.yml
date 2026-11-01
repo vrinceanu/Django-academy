@@ -1,7 +1,7 @@
 # Local development stack. `docker compose up` (or `docker-compose up`) starts all six services.
 # Web: http://localhost:3000   API: http://localhost:8000/api/v1/
 # Uploaded files are kept on disk in backend/media/ (staging and production use Cloudflare R2).
-name: django
+name: django-academy
 
 x-backend: &backend
   build:

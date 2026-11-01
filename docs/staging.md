@@ -28,7 +28,7 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
    `chips-staging-private` and `chips-staging-public`, and an R2 API token with
    Object Read & Write on those two buckets only. Note the account ID for the endpoint.
 6. **Environment file.** On the VM, copy `infra/staging/.env.example` to
-   `/opt/django/.env` (owned by `deploy`) and fill in every value. Generate secrets
+   `/opt/django-academy/.env` (owned by `deploy`) and fill in every value. Generate secrets
    with `python3 -c "import secrets; print(secrets.token_urlsafe(50))"`.
 7. **GitHub secrets** (repo Settings, Secrets and variables, Actions, environment
    `staging`):
@@ -43,6 +43,6 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
 
 ## Day to day
 
-- Logs: `ssh deploy@20.51.113.185 'cd /opt/django && docker compose logs -f api'`
+- Logs: `ssh deploy@20.51.113.185 'cd /opt/django-academy && docker compose logs -f api'`
 - Admin user: `docker compose exec api python manage.py createsuperuser`
-- Backups: `/opt/django/backups/`, one gzip dump per night, 14 days kept.
+- Backups: `/opt/django-academy/backups/`, one gzip dump per night, 14 days kept.
