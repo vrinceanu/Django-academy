@@ -1,0 +1,154 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--rail-width) 1fr;
+}
+
+.topbar {
+  display: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--rail-ink-strong);
+}
+
+.rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--rail-bg);
+  color: var(--rail-ink);
+  padding: 20px 0 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.railBrand {
+  padding: 0 20px 20px;
+}
+
+.areas,
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.areas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin: 0 12px 16px;
+  padding: 3px;
+  background: var(--navy);
+  border-radius: var(--radius-sm);
+}
+
+.area {
+  display: block;
+  text-align: center;
+  padding: 6px 0;
+  font-size: var(--step--1);
+  color: var(--rail-ink);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.area[aria-current="true"] {
+  background: var(--deep-blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* The active item's "pin lead": a short line from the rail edge, like a chip pin. */
+.item {
+  position: relative;
+  display: block;
+  padding: 8px 20px 8px 28px;
+  color: var(--rail-ink);
+  text-decoration: none;
+}
+
+.item:hover {
+  background: var(--rail-hover);
+  color: var(--rail-ink-strong);
+}
+
+.item[aria-current="page"] {
+  background: var(--rail-active);
+  color: var(--rail-ink-strong);
+  font-weight: 600;
+}
+
+.item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 16px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 0 2px 2px 0;
+  background: var(--rail-lead);
+}
+
+.account {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--navy);
+}
+
+.main {
+  padding: 40px 48px 64px;
+  min-width: 0;
+}
+
+.menuButton {
+  background: transparent;
+  color: var(--rail-ink-strong);
+  border: 1px solid var(--steel);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--rail-bg);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  .rail {
+    display: none;
+    position: static;
+    height: auto;
+  }
+
+  .rail[data-open="true"] {
+    display: flex;
+  }
+
+  .railBrand {
+    display: none;
+  }
+
+  .main {
+    padding: 24px 16px 48px;
+  }
+}

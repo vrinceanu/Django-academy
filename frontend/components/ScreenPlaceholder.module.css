@@ -1,0 +1,15 @@
+.placeholder {
+  max-width: 72ch;
+}
+
+.summary {
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+.status {
+  color: var(--ink-muted);
+  padding: 14px 16px;
+  border: 1.5px dashed var(--rule);
+  border-radius: var(--radius-md);
+}

@@ -1,0 +1,25 @@
+{
+	email {$ACME_EMAIL}
+}
+
+# HTTPS on :8080 with a Let's Encrypt certificate (port 80 must be open for the challenge).
+{$SITE_ADDRESS} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=300"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+	handle /ops/* {
+		reverse_proxy api:8000
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+}

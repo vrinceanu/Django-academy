@@ -1,0 +1,70 @@
+[project]
+name = "chips-academy-backend"
+version = "0.1.0"
+description = "CHIPS Academy LMS backend (HBCU CHIPS Network)"
+requires-python = ">=3.12"
+dependencies = [
+  "Django>=5.2,<5.3",           # LTS until April 2028
+  "djangorestframework>=3.16",
+  "drf-spectacular>=0.28",
+  "celery[redis]>=5.5",
+  "django-storages[s3]>=1.14",
+  "psycopg[binary]>=3.2",
+  "markdown-it-py>=3.0",
+  "nh3>=0.2.18",
+  "gunicorn>=23.0",
+  "whitenoise>=6.8",
+  "sentry-sdk[django,celery]>=2.20",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "pytest-django>=4.9",
+  "pytest-cov>=6.0",
+  "factory-boy>=3.3",
+  "ruff>=0.9",
+  "mypy>=1.14",
+  "django-stubs[compatible-mypy]>=5.1",
+  "djangorestframework-stubs>=3.15",
+  "celery-types>=0.22",
+]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["config*", "apps*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["*/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ", "S", "SIM", "RUF"]
+ignore = ["S101", "RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/tests/*" = ["S105", "S106"]
+"config/settings/*" = ["F403", "F405"]
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+ignore_missing_imports = true
+check_untyped_defs = true
+exclude = ["migrations/"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py"]
+addopts = "-q --strict-markers"
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*"]

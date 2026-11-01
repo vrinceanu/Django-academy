@@ -1,0 +1,141 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  background: radial-gradient(120% 90% at 85% 40%, #0e2a52 0%, var(--navy) 45%, var(--midnight) 100%);
+  color: var(--ice);
+}
+
+.heroInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 24px 72px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.heroBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  margin-top: 56px;
+}
+
+.title {
+  font-size: clamp(2rem, 4.4vw, 3.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: #fff;
+  max-width: 18ch;
+  margin-bottom: 20px;
+}
+
+.lede {
+  font-size: var(--step-1);
+  color: #c9d6e6;
+  max-width: 44ch;
+  margin-bottom: 32px;
+}
+
+.art {
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+.traces {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: #1c4f8f;
+}
+
+.chip {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 0 28px rgba(57, 182, 255, 0.35));
+}
+
+.chip svg {
+  width: 56%;
+  height: 56%;
+}
+
+.main {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 56px 24px;
+  flex: 1;
+}
+
+.steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.steps li {
+  counter-increment: step;
+  border-top: 3px solid var(--deep-blue);
+  padding-top: 16px;
+}
+
+.steps li h3::before {
+  content: counter(step) ". ";
+  color: var(--action);
+}
+
+.steps h3 {
+  font-size: var(--step-1);
+}
+
+.steps p {
+  color: var(--ink-muted);
+}
+
+.footer {
+  border-top: 1px solid var(--rule);
+  padding: 20px 24px;
+  color: var(--ink-muted);
+  font-size: var(--step--1);
+  text-align: center;
+}
+
+.footer p {
+  margin: 0 auto;
+}
+
+@media (max-width: 860px) {
+  .heroBody {
+    grid-template-columns: 1fr;
+    margin-top: 32px;
+  }
+
+  .art {
+    width: 220px;
+    order: -1;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}

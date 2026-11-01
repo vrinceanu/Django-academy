@@ -1,0 +1,89 @@
+openapi: 3.0.3
+info:
+  title: CHIPS Academy API
+  version: 1.0.0
+  description: HBCU CHIPS Network learning platform. Routes are grouped by caller.
+paths:
+  /api/v1/health/:
+    get:
+      operationId: health_retrieve
+      description: Liveness and database check for Caddy, Docker and uptime monitors.
+      tags:
+      - health
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+          description: ''
+  /api/v1/me/:
+    get:
+      operationId: me_retrieve
+      description: The signed-in user. Profile editing and consents arrive in M1.
+      tags:
+      - me
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Me'
+          description: ''
+components:
+  schemas:
+    Health:
+      type: object
+      properties:
+        status:
+          type: string
+        database:
+          type: string
+      required:
+      - database
+      - status
+    Me:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Network email
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        preferred_name:
+          type: string
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          description: Can open the operations admin at /ops/admin/.
+      required:
+      - display_name
+      - email
+      - first_name
+      - id
+      - is_staff
+      - last_name
+      - preferred_name
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
