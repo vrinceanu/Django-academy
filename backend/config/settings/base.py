@@ -112,31 +112,49 @@ USE_TZ = True
 STATIC_URL = "/ops/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# --- File storage: Cloudflare R2 in staging/prod, MinIO locally (S3 API for both) ---
-S3_ENDPOINT_URL = env("S3_ENDPOINT_URL", "http://localhost:9000")
-S3_ACCESS_KEY = env("S3_ACCESS_KEY", "minio")
-S3_SECRET_KEY = env("S3_SECRET_KEY", "minio-secret")
+# --- File storage ---
+# Staging and production use Cloudflare R2 (S3 API). Local development keeps files on
+# disk under backend/media/ unless S3_ENDPOINT_URL is set (e.g. to a personal R2 bucket).
+MEDIA_ROOT = Path(env("MEDIA_ROOT", str(BASE_DIR / "media")))
+MEDIA_URL = "/media/"
+S3_ENDPOINT_URL = env("S3_ENDPOINT_URL", "")
+S3_ACCESS_KEY = env("S3_ACCESS_KEY", "")
+S3_SECRET_KEY = env("S3_SECRET_KEY", "")
 S3_BUCKET_PUBLIC = env("S3_BUCKET_PUBLIC", "chips-public")
 S3_BUCKET_PRIVATE = env("S3_BUCKET_PRIVATE", "chips-private")
+USE_S3 = bool(S3_ENDPOINT_URL)
 
-_s3_common = {
-    "endpoint_url": S3_ENDPOINT_URL,
-    "access_key": S3_ACCESS_KEY,
-    "secret_key": S3_SECRET_KEY,
-    "region_name": env("S3_REGION", "auto"),
-    "signature_version": "s3v4",
-    "addressing_style": "path",
-}
-STORAGES = {
-    # Private by default: submissions, lecture video, packages. Served by signed URL.
-    "default": {
+if USE_S3:
+    _s3_common = {
+        "endpoint_url": S3_ENDPOINT_URL,
+        "access_key": S3_ACCESS_KEY,
+        "secret_key": S3_SECRET_KEY,
+        "region_name": env("S3_REGION", "auto"),
+        "signature_version": "s3v4",
+        "addressing_style": "path",
+    }
+    _private_storage = {
         "BACKEND": "apps.core.storage.PrivateStorage",
         "OPTIONS": {**_s3_common, "bucket_name": S3_BUCKET_PRIVATE},
-    },
-    "public": {
+    }
+    _public_storage = {
         "BACKEND": "apps.core.storage.PublicStorage",
         "OPTIONS": {**_s3_common, "bucket_name": S3_BUCKET_PUBLIC},
-    },
+    }
+else:
+    _private_storage = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {"location": MEDIA_ROOT / "private", "base_url": "/media/private/"},
+    }
+    _public_storage = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {"location": MEDIA_ROOT / "public", "base_url": "/media/public/"},
+    }
+
+STORAGES = {
+    # Private by default: submissions, lecture video, packages. Served by signed URL.
+    "default": _private_storage,
+    "public": _public_storage,
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 

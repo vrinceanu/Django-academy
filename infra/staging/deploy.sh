@@ -7,7 +7,7 @@ TAG="${1:?usage: deploy.sh <image-tag>}"
 sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${TAG}/" .env
 
 docker compose pull api web
-docker compose up -d postgres redis minio
+docker compose up -d postgres redis
 docker compose run --rm api python manage.py migrate --noinput
 docker compose run --rm api python manage.py ensure_buckets
 docker compose up -d --remove-orphans

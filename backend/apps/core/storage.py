@@ -1,4 +1,4 @@
-"""S3-compatible storage for Cloudflare R2 (staging/prod) and MinIO (local).
+"""S3-compatible storage for Cloudflare R2 (staging, production, optional in development).
 
 Private files (submissions, lecture video, packages) are only ever served through
 short-lived signed URLs. Public files (catalog images, certificate PDFs that are

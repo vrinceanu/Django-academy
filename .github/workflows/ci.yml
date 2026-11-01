@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: cp .env.example .env
-      - run: docker compose up -d --build --wait --wait-timeout 300 postgres redis minio api
+      - run: docker compose up -d --build --wait --wait-timeout 300 postgres redis api
       - run: docker compose up -d --build web worker beat
       - name: API health
         run: curl --retry 20 --retry-delay 3 --retry-all-errors -fsS http://localhost:8000/api/v1/health/

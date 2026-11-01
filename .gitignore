@@ -16,6 +16,7 @@ __pycache__/
 .coverage
 htmlcov/
 backend/staticfiles/
+backend/media/
 
 # Node
 node_modules/

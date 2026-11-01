@@ -20,12 +20,18 @@ Phase 1 build plan).
 
 ## Run it locally
 
-You need Docker Desktop.
+You need Docker with Compose v2: Docker Desktop, or Colima with the Homebrew
+`docker-compose` package. Commands below use `docker compose`; with the standalone
+package type `docker-compose` instead (the Makefile picks whichever you have).
 
 ```sh
 cp .env.example .env
 docker compose up --build
 ```
+
+With Colima, give it enough room for the stack: `colima start --cpu 4 --memory 6`.
+Uploaded files are stored in `backend/media/`; staging and production use
+Cloudflare R2.
 
 | Service | Address |
 | --- | --- |
@@ -33,7 +39,6 @@ docker compose up --build
 | API | http://localhost:8000/api/v1/health/ |
 | API docs | http://localhost:8000/api/v1/docs/ (sign in to /ops/admin/ first) |
 | Operations admin | http://localhost:8000/ops/admin/ |
-| MinIO console | http://localhost:9001 (minio / minio-secret) |
 
 Create an admin for `/ops/admin/`:
 

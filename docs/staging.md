@@ -24,10 +24,13 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
    ```
 
    Append `staging_deploy.pub` to `/home/deploy/.ssh/authorized_keys` on the VM.
-5. **Environment file.** On the VM, copy `infra/staging/.env.example` to
+5. **Cloudflare R2.** In the Cloudflare dashboard, create two R2 buckets,
+   `chips-staging-private` and `chips-staging-public`, and an R2 API token with
+   Object Read & Write on those two buckets only. Note the account ID for the endpoint.
+6. **Environment file.** On the VM, copy `infra/staging/.env.example` to
    `/opt/django/.env` (owned by `deploy`) and fill in every value. Generate secrets
    with `python3 -c "import secrets; print(secrets.token_urlsafe(50))"`.
-6. **GitHub secrets** (repo Settings, Secrets and variables, Actions, environment
+7. **GitHub secrets** (repo Settings, Secrets and variables, Actions, environment
    `staging`):
 
    | Secret | Value |
@@ -36,7 +39,7 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
    | `STAGING_HOST` | `20.51.113.185` |
    | `GHCR_READ_TOKEN` | a fine-grained token with `read:packages`, so the VM can pull images |
 
-7. Run the **Deploy staging** workflow once by hand (Actions tab), then open the site.
+8. Run the **Deploy staging** workflow once by hand (Actions tab), then open the site.
 
 ## Day to day
 

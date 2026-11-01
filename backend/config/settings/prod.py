@@ -24,6 +24,9 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 ENVIRONMENT = env("ENVIRONMENT", "staging")
 
+if not USE_S3:
+    raise RuntimeError("Staging and production need S3_ENDPOINT_URL (Cloudflare R2).")
+
 if dsn := env("SENTRY_DSN", ""):
     sentry_sdk.init(
         dsn=dsn, environment=ENVIRONMENT, traces_sample_rate=0.05, send_default_pii=False
