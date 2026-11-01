@@ -25,6 +25,9 @@ jobs:
       url: https://staging.hbcuchip.org:8080
     env:
       SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      # Until the staging secrets exist (docs/staging.md), images are built and
+      # pushed but the deploy step is skipped instead of failing.
+      HAS_STAGING: ${{ secrets.STAGING_HOST != '' && secrets.STAGING_SSH_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -56,6 +59,7 @@ jobs:
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
       - name: Deploy to the Azure VM
+        if: env.HAS_STAGING == 'true'
         env:
           SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
           SSH_HOST: ${{ secrets.STAGING_HOST }}
@@ -67,3 +71,6 @@ jobs:
           scp -i ~/.ssh/deploy infra/staging/compose.yml infra/staging/Caddyfile infra/staging/deploy.sh "deploy@$SSH_HOST:/opt/django-academy/"
           ssh -i ~/.ssh/deploy "deploy@$SSH_HOST" \
             "echo '$GHCR_READ_TOKEN' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin && bash /opt/django-academy/deploy.sh '$SHA'"
+      - name: Staging not configured yet
+        if: env.HAS_STAGING != 'true'
+        run: echo "::notice::Images pushed to GHCR. Add the staging secrets (docs/staging.md) to deploy."
