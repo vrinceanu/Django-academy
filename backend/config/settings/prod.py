@@ -22,10 +22,13 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = int(env("SECURE_HSTS_SECONDS", "0"))  # raise once HTTPS is proven
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-ENVIRONMENT = env("ENVIRONMENT", "staging")
+# "production" unless the environment says otherwise, so the guard below fails safe.
+ENVIRONMENT = env("ENVIRONMENT", "production")
 
-if not USE_S3:
-    raise RuntimeError("Staging and production need S3_ENDPOINT_URL (Cloudflare R2).")
+# Production must keep files in Cloudflare R2. Staging may use the VM's disk (a Docker
+# volume at MEDIA_ROOT) until the media pipeline arrives in M3.
+if ENVIRONMENT == "production" and not USE_S3:
+    raise RuntimeError("Production needs S3_ENDPOINT_URL (Cloudflare R2).")
 
 if dsn := env("SENTRY_DSN", ""):
     sentry_sdk.init(

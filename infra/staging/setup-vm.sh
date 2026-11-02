@@ -25,6 +25,7 @@ sudo chown -R deploy:deploy /home/deploy/.ssh "$APP_DIR"
 # Nightly database dump, kept for 14 days.
 sudo tee /etc/cron.d/django-academy-backup >/dev/null <<'CRON'
 15 3 * * * deploy cd /opt/django-academy && mkdir -p backups && docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' | gzip > backups/chips-$(date +\%F).sql.gz && find backups -name '*.sql.gz' -mtime +14 -delete
+30 3 * * * deploy cd /opt/django-academy && mkdir -p backups && docker compose run --rm --no-deps -T api tar czf - -C /app media > backups/media-$(date +\%F).tgz && find backups -name 'media-*.tgz' -mtime +14 -delete
 CRON
 
 echo

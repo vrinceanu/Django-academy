@@ -30,8 +30,8 @@ docker compose up --build
 ```
 
 With Colima, give it enough room for the stack: `colima start --cpu 4 --memory 6`.
-Uploaded files are stored in `backend/media/`; staging and production use
-Cloudflare R2.
+Uploaded files are stored in `backend/media/`. Staging keeps them on the VM's disk
+until M3; production uses Cloudflare R2.
 
 | Service | Address |
 | --- | --- |

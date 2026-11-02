@@ -24,9 +24,8 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
    ```
 
    Append `staging_deploy.pub` to `/home/deploy/.ssh/authorized_keys` on the VM.
-5. **Cloudflare R2.** In the Cloudflare dashboard, create two R2 buckets,
-   `chips-staging-private` and `chips-staging-public`, and an R2 API token with
-   Object Read & Write on those two buckets only. Note the account ID for the endpoint.
+5. **Files.** Staging keeps uploaded files on the VM's disk (Docker volume
+   `media_data`) until M3. Nothing to set up now; see "Moving to Cloudflare R2" below.
 6. **Environment file.** On the VM, copy `infra/staging/.env.example` to
    `/opt/django-academy/.env` (owned by `deploy`) and fill in every value. Generate secrets
    with `python3 -c "import secrets; print(secrets.token_urlsafe(50))"`.
@@ -50,4 +49,16 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
 
 - Logs: `ssh deploy@20.51.113.185 'cd /opt/django-academy && docker compose logs -f api'`
 - Admin user: `docker compose exec api python manage.py createsuperuser`
-- Backups: `/opt/django-academy/backups/`, one gzip dump per night, 14 days kept.
+- Backups: `/opt/django-academy/backups/`, a database dump and a media archive per
+  night, 14 days kept.
+
+## Moving to Cloudflare R2 (M3)
+
+Before lecture video arrives, staging moves its files to R2, as production will:
+
+1. In the Cloudflare dashboard, create two R2 buckets, `chips-staging-private` and
+   `chips-staging-public`, and an R2 API token with Object Read & Write on those two
+   buckets only. Note the account ID for the endpoint.
+2. Fill in the `S3_*` lines in `/opt/django-academy/.env` and redeploy.
+
+Production has no disk fallback: it refuses to start without `S3_ENDPOINT_URL`.

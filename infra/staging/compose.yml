@@ -10,6 +10,9 @@ x-backend: &backend
     DJANGO_SETTINGS_MODULE: config.settings.prod
     POSTGRES_HOST: postgres
     REDIS_URL: redis://redis:6379/0
+  # Uploaded files live on the VM's disk until staging moves to R2 (M3).
+  volumes:
+    - media_data:/app/media
   depends_on:
     postgres:
       condition: service_healthy
@@ -75,3 +78,4 @@ volumes:
   caddy_data:
   caddy_config:
   postgres_data:
+  media_data:
