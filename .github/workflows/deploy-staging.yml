@@ -19,12 +19,16 @@ permissions:
 jobs:
   deploy:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
+    # The staging VM is ARM (linux/arm64), so images are built natively on GitHub's
+    # ARM runner (free for public repos). If production lands on x86, add linux/amd64
+    # to IMAGE_PLATFORMS (built under emulation, slower) or a second runner.
+    runs-on: ubuntu-24.04-arm
     environment:
       name: staging
       url: https://staging.hbcuchip.org:8080
     env:
       SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      IMAGE_PLATFORMS: linux/arm64
       # Until the staging secrets exist (docs/staging.md), images are built and
       # pushed but the deploy step is skipped instead of failing.
       HAS_STAGING: ${{ secrets.STAGING_HOST != '' && secrets.STAGING_SSH_KEY != '' }}
@@ -45,6 +49,7 @@ jobs:
         with:
           context: backend
           target: prod
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           push: true
           tags: ghcr.io/${{ env.OWNER }}/django-academy-api:${{ env.SHA }},ghcr.io/${{ env.OWNER }}/django-academy-api:latest
           cache-from: type=gha,scope=api
@@ -54,6 +59,7 @@ jobs:
         with:
           context: frontend
           target: prod
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           push: true
           tags: ghcr.io/${{ env.OWNER }}/django-academy-web:${{ env.SHA }},ghcr.io/${{ env.OWNER }}/django-academy-web:latest
           cache-from: type=gha,scope=web
