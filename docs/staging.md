@@ -30,14 +30,19 @@ Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
 6. **Environment file.** On the VM, copy `infra/staging/.env.example` to
    `/opt/django-academy/.env` (owned by `deploy`) and fill in every value. Generate secrets
    with `python3 -c "import secrets; print(secrets.token_urlsafe(50))"`.
-7. **GitHub secrets** (repo Settings, Secrets and variables, Actions, environment
-   `staging`):
+7. **GitHub secrets.** On the repo: Settings, Secrets and variables, Actions,
+   New repository secret.
 
    | Secret | Value |
    | --- | --- |
-   | `STAGING_SSH_KEY` | contents of `staging_deploy` (the private key) |
+   | `STAGING_SSH_KEY` | contents of `staging_deploy` (the private key, including the BEGIN/END lines) |
    | `STAGING_HOST` | `20.51.113.185` |
-   | `GHCR_READ_TOKEN` | a fine-grained token with `read:packages`, so the VM can pull images |
+   | `GHCR_READ_TOKEN` | a personal access token (classic) with only `read:packages`, so the VM can pull images |
+
+   The container registry does not accept fine-grained tokens. Create the classic token at
+   https://github.com/settings/tokens/new?scopes=read:packages and give it an expiry you
+   will remember: when it lapses, deploys fail at the image pull until it is replaced.
+   The token lives only in GitHub secrets; the deploy job hands it to the VM for each pull.
 
 8. Run the **Deploy staging** workflow once by hand (Actions tab), then open the site.
 
