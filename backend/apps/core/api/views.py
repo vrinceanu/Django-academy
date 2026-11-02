@@ -1,4 +1,3 @@
-from django.db import connection
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
@@ -6,7 +5,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.core.health import check
 
+
+# HealthCheckMiddleware normally answers first; this view documents the endpoint in
+# the API schema and serves it if the middleware is ever removed.
 class HealthView(APIView):
     """Liveness and database check for Caddy, Docker and uptime monitors."""
 
@@ -19,11 +22,5 @@ class HealthView(APIView):
         )
     )
     def get(self, request: Request) -> Response:
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT 1")
-            db = "ok"
-        except Exception:
-            db = "unavailable"
-        status = "ok" if db == "ok" else "degraded"
-        return Response({"status": status, "database": db}, status=200 if db == "ok" else 503)
+        body, status = check()
+        return Response(body, status=status)
