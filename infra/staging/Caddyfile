@@ -1,5 +1,14 @@
 {
 	email {$ACME_EMAIL}
+
+	# Browsers send plain HTTP when the address is typed without https://.
+	# Redirect it on the same port instead of answering with an error.
+	servers {
+		listener_wrappers {
+			http_redirect
+			tls
+		}
+	}
 }
 
 # HTTPS on :8080 with a Let's Encrypt certificate (port 80 must be open for the challenge).

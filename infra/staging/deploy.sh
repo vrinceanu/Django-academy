@@ -11,6 +11,9 @@ docker compose up -d postgres redis
 docker compose run --rm api python manage.py migrate --noinput
 docker compose run --rm api python manage.py ensure_buckets
 docker compose up -d --remove-orphans
+# Compose does not restart Caddy when only its mounted Caddyfile changed.
+docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile \
+  || docker compose restart caddy
 docker image prune -f >/dev/null
 
 # Fail the deploy if the site is not healthy within a minute.
