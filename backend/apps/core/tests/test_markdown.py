@@ -25,8 +25,8 @@ def test_javascript_links_are_removed():
 
 
 def test_links_get_safe_rel():
-    html = render_markdown("[CHIPS](https://hbcuchip.org)")
-    assert 'href="https://hbcuchip.org"' in html
+    html = render_markdown("[CHIPS](https://hbcuchips.org)")
+    assert 'href="https://hbcuchips.org"' in html
     assert "noopener" in html
 
 

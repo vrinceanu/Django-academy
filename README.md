@@ -56,7 +56,7 @@ make migrations  # makemigrations after model changes
 ```
 
 CI runs all of these on every pull request, then starts the full compose stack.
-A green build of `main` deploys to staging at https://staging.hbcuchip.org:8080
+A green build of `main` deploys to staging at https://staging.hbcuchips.org:8080
 (see `docs/staging.md`).
 
 ## Rules every app follows

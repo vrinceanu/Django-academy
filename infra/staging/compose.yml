@@ -1,4 +1,4 @@
-# Staging and demo stack on the Azure VM. Served at https://staging.hbcuchip.org:8080
+# Staging and demo stack on the Azure VM. Served at https://staging.hbcuchips.org:8080
 # Images are built by GitHub Actions and pulled from GHCR; IMAGE_TAG is the git SHA.
 name: django-academy
 
@@ -24,7 +24,7 @@ services:
     image: caddy:2-alpine
     restart: unless-stopped
     environment:
-      SITE_ADDRESS: ${SITE_ADDRESS:-staging.hbcuchip.org:8080}
+      SITE_ADDRESS: ${SITE_ADDRESS:-staging.hbcuchips.org:8080}
       ACME_EMAIL: ${ACME_EMAIL}
     ports:
       - "80:80"     # needed only for Let's Encrypt HTTP challenges and redirects

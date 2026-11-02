@@ -9,7 +9,7 @@ from apps.audit.models import AppendOnlyError, AuditEvent
 def test_record_with_actor_and_target(staff, user):
     event = audit.record("people.update", actor=staff, target=user, data={"field": "first_name"})
     assert event.actor == staff
-    assert event.actor_label == "admin@hbcuchip.org"
+    assert event.actor_label == "admin@hbcuchips.org"
     assert event.target_type == "accounts.user"
     assert event.target_id == str(user.pk)
     assert event.data == {"field": "first_name"}

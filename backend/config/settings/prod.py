@@ -12,7 +12,7 @@ EMAIL_PORT = int(env("EMAIL_PORT", "587"))
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "CHIPS Academy <no-reply@hbcuchip.org>")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "CHIPS Academy <no-reply@hbcuchips.org>")
 
 # TLS ends at Caddy, which forwards over the internal Docker network.
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

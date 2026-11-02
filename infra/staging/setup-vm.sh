@@ -31,6 +31,6 @@ CRON
 echo
 echo "Done. Next steps:"
 echo "  1. Azure portal > VM > Networking: allow inbound TCP 80 and 8080."
-echo "  2. DNS: A record staging.hbcuchip.org -> this VM's public IP."
+echo "  2. DNS: A record staging.hbcuchips.org -> this VM's public IP."
 echo "  3. Put the GitHub Actions deploy public key in /home/deploy/.ssh/authorized_keys."
 echo "  4. Copy infra/staging/{compose.yml,Caddyfile,deploy.sh} to $APP_DIR and create $APP_DIR/.env."

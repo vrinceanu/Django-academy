@@ -1,13 +1,13 @@
 # Staging on the Azure VM
 
-Staging and demos run at **https://staging.hbcuchip.org:8080** on the Azure VM
+Staging and demos run at **https://staging.hbcuchips.org:8080** on the Azure VM
 (`20.51.113.185`). Each green build of `main` deploys there automatically.
 
 ## One-time setup
 
 1. **Network.** In the Azure portal, open the VM's networking rules and allow inbound
    TCP **80** (Let's Encrypt certificate challenge) and **8080** (the site).
-2. **DNS.** Point an A record for `staging.hbcuchip.org` at `20.51.113.185`.
+2. **DNS.** Point an A record for `staging.hbcuchips.org` at `20.51.113.185`.
 3. **Prepare the VM.** From your Mac, using your own key (keep it out of the repo):
 
    ```sh

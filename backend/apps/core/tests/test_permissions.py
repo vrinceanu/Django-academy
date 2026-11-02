@@ -30,7 +30,7 @@ def test_unknown_action_raises(user):
 
 @pytest.mark.django_db
 def test_superuser_allowed_everything(django_user_model):
-    root = django_user_model.objects.create_superuser(email="root@hbcuchip.org")
+    root = django_user_model.objects.create_superuser(email="root@hbcuchips.org")
     assert can(root, "anything.at_all") is True
 
 

@@ -1,6 +1,6 @@
 name: Deploy staging
 
-# Every green build of main is deployed to https://staging.hbcuchip.org:8080
+# Every green build of main is deployed to https://staging.hbcuchips.org:8080
 on:
   workflow_run:
     workflows: [CI]
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     environment:
       name: staging
-      url: https://staging.hbcuchip.org:8080
+      url: https://staging.hbcuchips.org:8080
     env:
       SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
       IMAGE_PLATFORMS: linux/arm64

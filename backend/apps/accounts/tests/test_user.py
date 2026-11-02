@@ -3,13 +3,13 @@ import pytest
 
 @pytest.mark.django_db
 def test_email_is_login_and_normalized(user):
-    assert user.email == "student@hbcuchip.org"
+    assert user.email == "student@hbcuchips.org"
     assert user.has_usable_password() is False  # Google sign-in, no local password
 
 
 @pytest.mark.django_db
 def test_email_lookup_ignores_case(django_user_model, user):
-    assert django_user_model.objects.get_by_natural_key("STUDENT@hbcuchip.org") == user
+    assert django_user_model.objects.get_by_natural_key("STUDENT@hbcuchips.org") == user
 
 
 @pytest.mark.django_db
@@ -22,7 +22,7 @@ def test_display_name(user):
 
 @pytest.mark.django_db
 def test_superuser(django_user_model):
-    root = django_user_model.objects.create_superuser(email="root@hbcuchip.org", password="x")
+    root = django_user_model.objects.create_superuser(email="root@hbcuchips.org", password="x")
     assert root.is_staff and root.is_superuser and root.check_password("x")
 
 
@@ -35,5 +35,5 @@ def test_me_requires_login(api_client):
 def test_me_returns_current_user(api_client, user):
     api_client.force_authenticate(user)
     body = api_client.get("/api/v1/me/").json()
-    assert body["email"] == "student@hbcuchip.org"
+    assert body["email"] == "student@hbcuchips.org"
     assert body["display_name"] == "Ada"

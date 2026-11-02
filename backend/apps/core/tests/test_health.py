@@ -18,7 +18,7 @@ def test_schema_is_published(api_client, staff):
 @pytest.mark.django_db
 def test_health_answers_for_any_host(client, settings):
     """Docker and deploy.sh probe as localhost:8000, which is not an allowed host."""
-    settings.ALLOWED_HOSTS = ["staging.hbcuchip.org"]
+    settings.ALLOWED_HOSTS = ["staging.hbcuchips.org"]
     response = client.get("/api/v1/health/", HTTP_HOST="localhost:8000")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
@@ -26,7 +26,7 @@ def test_health_answers_for_any_host(client, settings):
 
 @pytest.mark.django_db
 def test_other_paths_still_validate_host(client, settings):
-    settings.ALLOWED_HOSTS = ["staging.hbcuchip.org"]
+    settings.ALLOWED_HOSTS = ["staging.hbcuchips.org"]
     response = client.get("/api/v1/me/", HTTP_HOST="localhost:8000")
     assert response.status_code == 400
 
